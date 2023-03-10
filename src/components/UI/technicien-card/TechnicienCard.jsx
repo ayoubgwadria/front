@@ -19,7 +19,7 @@ const TechnicienCard = (props) => {
       <div className="product__content">
         
         <h5 className="mb-1">
-          <Link to={`/foods/${id}`}>Name</Link>
+          <Link to={`/technicien/${id}`}>Name</Link>
         </h5>
        
         <div className="d-flex flex-column mt-2">

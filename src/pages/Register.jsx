@@ -3,18 +3,38 @@ import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/common-section/CommonSection";
 import { Container, Row, Col } from "reactstrap";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { register } from "../store/auth/RegisterSlice";
 
 const Register = () => {
   const nomRef = useRef();
   const prenomRef = useRef();
+  const emailRef = useRef();
   const motDePasseRef = useRef();
   const telephoneRef = useRef();
+  const emplacementRef = useRef();
   const longitudeRef = useRef();
   const latitudeRef = useRef();
   const domaineRef = useRef();
 
+  const dispatch = useDispatch();
+
   const submitHandler = (e) => {
     e.preventDefault();
+
+    const formData = {
+      nom: nomRef.current.value,
+      prenom: prenomRef.current.value,
+      email: emailRef.current.value,
+      mot_de_passe: motDePasseRef.current.value,
+      telephone: telephoneRef.current.value,
+      emplacement: emplacementRef.current.value,
+      longitude: longitudeRef.current.value,
+      latitude: latitudeRef.current.value,
+      domaine: domaineRef.current.value,
+    };
+
+    dispatch(register(formData));
   };
 
   return (
@@ -31,7 +51,9 @@ const Register = () => {
                     placeholder="Nom"
                     required
                     ref={nomRef}
+                    name="nom"
                   />
+                  {console.log(nomRef.current)}
                 </div>
                 <div className="form__group">
                   <input
@@ -39,6 +61,14 @@ const Register = () => {
                     placeholder="Prenom"
                     required
                     ref={prenomRef}
+                  />
+                </div>
+                <div className="form__group">
+                  <input
+                    type="text"
+                    placeholder="Email"
+                    required
+                    ref={emailRef}
                   />
                 </div>
                 <div className="form__group">
@@ -62,7 +92,7 @@ const Register = () => {
                     type="text"
                     placeholder="emplacement"
                     required
-                    ref={longitudeRef}
+                    ref={emplacementRef}
                   />
                 </div>
                 <div className="form__group">

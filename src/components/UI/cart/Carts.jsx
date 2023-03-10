@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import CartItem from "./CartItem";
 
 import { useDispatch, useSelector } from "react-redux";
-import { cartUiActions } from "../../../store/shopping-cart/cartUiSlice";
+import { cartUiActions } from "../../../store/cart/cartUiSlice";
 
 import "../../../styles/shopping-cart.css";
 
@@ -36,16 +36,7 @@ const Carts = () => {
           )}
         </div>
 
-        <div className="cart__bottom d-flex align-items-center justify-content-between">
-          <h6>
-            Subtotal : <span>${totalAmount}</span>
-          </h6>
-          <button>
-            <Link to="/checkout" onClick={toggleCart}>
-              Checkout
-            </Link>
-          </button>
-        </div>
+      
       </ListGroup>
     </div>
   );

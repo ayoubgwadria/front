@@ -7,7 +7,7 @@ import CommonSection from "../components/UI/common-section/CommonSection";
 import { Container, Row, Col } from "reactstrap";
 
 import { useDispatch } from "react-redux";
-import { cartActions } from "../store/shopping-cart/cartSlice";
+import { cartActions } from "../store/cart/cartSlice";
 
 import "../styles/product-details.css";
 
@@ -16,9 +16,6 @@ import ProductCard from "../components/UI/product-card/ProductCard";
 
 const EmploisDetails = () => {
   const [tab, setTab] = useState("desc");
-  const [enteredName, setEnteredName] = useState("");
-  const [enteredEmail, setEnteredEmail] = useState("");
-  const [reviewMsg, setReviewMsg] = useState("");
   const { id } = useParams();
   const dispatch = useDispatch();
 
@@ -39,11 +36,6 @@ const EmploisDetails = () => {
     );
   };
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-
-    console.log(enteredName, enteredEmail, reviewMsg);
-  };
 
   useEffect(() => {
     setPreviewImg(product.image01);
@@ -102,7 +94,7 @@ const EmploisDetails = () => {
                 </p>
 
                 <button onClick={addItem} className="addTOCart__btn">
-                  Add to Cart
+                  Postuler
                 </button>
               </div>
             </Col>
@@ -119,7 +111,7 @@ const EmploisDetails = () => {
                   className={` ${tab === "rev" ? "tab__active" : ""}`}
                   onClick={() => setTab("rev")}
                 >
-                  Review
+                Les conditions
                 </h6>
               </div>
 
@@ -131,54 +123,18 @@ const EmploisDetails = () => {
                 <div className="tab__form mb-3">
                   <div className="review pt-5">
                     <p className="user__name mb-0">Jhon Doe</p>
-                    <p className="user__email">jhon1@gmail.com</p>
+                    <p className="feedback__text">great product</p>
+                  </div>
+
+                  <div className="review">
+                    <p className="user__name mb-0">Jhon Doe</p>                    
                     <p className="feedback__text">great product</p>
                   </div>
 
                   <div className="review">
                     <p className="user__name mb-0">Jhon Doe</p>
-                    <p className="user__email">jhon1@gmail.com</p>
                     <p className="feedback__text">great product</p>
                   </div>
-
-                  <div className="review">
-                    <p className="user__name mb-0">Jhon Doe</p>
-                    <p className="user__email">jhon1@gmail.com</p>
-                    <p className="feedback__text">great product</p>
-                  </div>
-                  <form className="form" onSubmit={submitHandler}>
-                    <div className="form__group">
-                      <input
-                        type="text"
-                        placeholder="Enter your name"
-                        onChange={(e) => setEnteredName(e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <div className="form__group">
-                      <input
-                        type="text"
-                        placeholder="Enter your email"
-                        onChange={(e) => setEnteredEmail(e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <div className="form__group">
-                      <textarea
-                        rows={5}
-                        type="text"
-                        placeholder="Write your review"
-                        onChange={(e) => setReviewMsg(e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <button type="submit" className="addTOCart__btn">
-                      Submit
-                    </button>
-                  </form>
                 </div>
               )}
             </Col>

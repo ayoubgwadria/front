@@ -6,7 +6,7 @@ import work from "../../assets/images/work.png";
 import { NavLink, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { cartUiActions } from "../../store/shopping-cart/cartUiSlice";
+import { cartUiActions } from "../../store/cart/cartUiSlice";
 
 import "../../styles/header.css";
 
@@ -17,7 +17,7 @@ const nav__links = [
   },
   {
     display: "Techniciens",
-    path: "/foods",
+    path: "/technicien",
   },
   {
     display: "Emplois",
@@ -41,21 +41,6 @@ const Header = () => {
   const toggleCart = () => {
     dispatch(cartUiActions.toggle());
   };
-
-  useEffect(() => {
-    window.addEventListener("scroll", () => {
-      if (
-        document.body.scrollTop > 80 ||
-        document.documentElement.scrollTop > 80
-      ) {
-        headerRef.current.classList.add("header__shrink");
-      } else {
-        headerRef.current.classList.remove("header__shrink");
-      }
-    });
-
-    return () => window.removeEventListener("scroll");
-  }, []);
 
   return (
     <header className="header" ref={headerRef}>
