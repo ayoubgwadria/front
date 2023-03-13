@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import Helmet from "../components/Helmet/Helmet.js";
-import { Container, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
 
 import heroImg from "../assets/images/hero.png";
 import "../styles/hero-section.css";

@@ -1,143 +1,156 @@
-import React, { useEffect, useRef, useState } from "react";
-import Helmet from "../components/Helmet/Helmet";
-import CommonSection from "../components/UI/common-section/CommonSection";
-import { Container, Row, Col } from "reactstrap";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useRef } from 'react';
 import { useDispatch, useSelector } from "react-redux";
+import "../styles/register.css"
+import heroImg from "../assets/images/hero.png"
+import { Container, Row, Col } from "reactstrap";
 import { register } from "../store/auth/RegisterSlice";
+import { useNavigate } from 'react-router-dom';
 
-const Register = () => {
-  const nomRef = useRef();
-  const prenomRef = useRef();
-  const emailRef = useRef();
-  const motDePasseRef = useRef();
-  const telephoneRef = useRef();
-  const emplacementRef = useRef();
-  const longitudeRef = useRef();
-  const latitudeRef = useRef();
-  const domaineRef = useRef();
+function Register() {
+    const UserType = useSelector((state) => state.UserType.isClient);
+    const nomRef = useRef();
+    const prenomRef = useRef();
+    const emailRef = useRef();
+    const motDePasseRef = useRef();
+    const telephoneRef = useRef();
+    const emplacementRef = useRef();
+    const longitudeRef = useRef();
+    const latitudeRef = useRef();
+    const navigate=useNavigate();
 
+    const dispatch = useDispatch();
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { successMessage, error } = useSelector((state => state.register))
-  const { loading } = useSelector((state) => state.register);
-  const submitHandler = async (e) => {
-    e.preventDefault();
+    const submitHandler = (e) => {
+        e.preventDefault();
+        const formData = {
+            nom: nomRef.current.value,
+            prenom: prenomRef.current.value,
+            email: emailRef.current.value,
+            mot_de_passe: motDePasseRef.current.value,
+            telephone: telephoneRef.current.value,
+            emplacement: emplacementRef.current.value,
+            longitude: longitudeRef.current.value,
+            latitude: latitudeRef.current.value,
+            usertype: UserType,
+        };
 
-    const formData = {
-      nom: nomRef.current.value,
-      prenom: prenomRef.current.value,
-      email: emailRef.current.value,
-      mot_de_passe: motDePasseRef.current.value,
-      telephone: telephoneRef.current.value,
-      emplacement: emplacementRef.current.value,
-      longitude: longitudeRef.current.value,
-      latitude: latitudeRef.current.value,
-      domaine: domaineRef.current.value,
+        dispatch(register(formData,navigate));
     };
+    return (
+        <section>
+            <Container>
+                <Row>
+                    <Col>
+                        <Col>
+                            <br /><br /><br /><br /><br />
+                            <div className="hero__img">
+                                <img src={heroImg} alt="hero-img" />
+                            </div>
+                        </Col>
+                    </Col>
+                    <Col >
+                        <br /> <br /> <br />
+                        <div className="register-container">
+                            <h2 className="register-title">Inscription</h2>
+                            <br />
+                            <form onSubmit={submitHandler} className="register-form">
+                                <div className="form-group">
 
-    await dispatch(register(formData,navigate));
-  }
+                                    <input
+                                        type="text"
+                                        ref={nomRef}
+                                        name="nom"
+                                        placeholder="Nom"
+                                        className="form-input"
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
 
+                                    <input
+                                        type="text"
+                                        ref={prenomRef}
+                                        name="prenom"
+                                        placeholder="Prenom"
+                                        className="form-input"
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
 
-  return (
-    <Helmet title="Inscription">
-      <br/><br/><br/><br/>  
-      <CommonSection title="Inscription" />
-      <section>
-        <Container>
-          <Row>
-            <Col lg="6" md="6" sm="12" className="m-auto text-center">
-              {error && <div className="alert alert-danger">{error.toString()}</div>}
-              {successMessage && <div className="alert alert-success">{successMessage.toString()}</div>}
-              <form className="form mb-5" onSubmit={submitHandler}>
+                                    <input
+                                        type="email"
+                                        ref={emailRef}
+                                        name="email"
+                                        placeholder="Email"
+                                        className="form-input"
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
 
-                <div className="form__group">
-                  <input
-                    type="text"
-                    placeholder="Nom"
-                    required
-                    ref={nomRef}
-                    name="nom"
-                  />
-                </div>
-                <div className="form__group">
-                  <input
-                    type="text"
-                    placeholder="Prenom"
-                    required
-                    ref={prenomRef}
-                  />
-                </div>
-                <div className="form__group">
-                  <input
-                    type="text"
-                    placeholder="Email"
-                    required
-                    ref={emailRef}
-                  />
-                </div>
-                <div className="form__group">
-                  <input
-                    type="password"
-                    placeholder="Mot de passe"
-                    required
-                    ref={motDePasseRef}
-                  />
-                </div>
-                <div className="form__group">
-                  <input
-                    type="tel"
-                    placeholder="Telephone"
-                    required
-                    ref={telephoneRef}
-                  />
-                </div>
-                <div className="form__group">
-                  <input
-                    type="text"
-                    placeholder="emplacement"
-                    required
-                    ref={emplacementRef}
-                  />
-                </div>
-                <div className="form__group">
-                  <input
-                    type="text"
-                    placeholder="Longitude"
-                    required
-                    ref={longitudeRef}
-                  />
-                </div>
-                <div className="form__group">
-                  <input
-                    type="text"
-                    placeholder="Latitude"
-                    required
-                    ref={latitudeRef}
-                  />
-                </div>
-                {<div className="form__group">
-                  <input
-                    type="text"
-                    placeholder="domaine"
-                    required
-                    ref={domaineRef}
-                  />
-                </div>}
+                                    <input
+                                        type="password"
+                                        ref={motDePasseRef}
+                                        name="motDePasse"
+                                        placeholder="Mot de passe"
+                                        className="form-input"
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
 
-                <button type="submit" className="addTOCart__btn" disabled={loading}>
-                  {loading ? "Loading..." : "Inscription"}
-                </button>
-              </form>
-              <Link to="/login">Already have an account? Login</Link>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-    </Helmet>
-  );
-};
+                                    <input
+                                        type="text"
+                                        ref={telephoneRef}
+                                        name="telephone"
+                                        placeholder="Telephone"
+                                        className="form-input"
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+
+                                    <input
+                                        type="text"
+                                        ref={emplacementRef}
+                                        name="emplacement"
+                                        placeholder="Emplacement"
+                                        className="form-input"
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+
+                                    <input
+                                        type="text"
+                                        ref={longitudeRef}
+                                        name="longitude"
+                                        placeholder="Longitude"
+                                        className="form-input"
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+
+                                    <input
+                                        type="text"
+                                        ref={latitudeRef}
+                                        name="latitude"
+                                        placeholder="Latitude"
+                                        className="form-input"
+                                        required
+                                    />
+                                </div>
+                                <button type="submit" className="form-submit-button">S'inscrire</button>
+                            </form>
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
+        </section>
+
+    );
+}
 
 export default Register;

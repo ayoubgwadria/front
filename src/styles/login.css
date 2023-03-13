@@ -1,0 +1,55 @@
+.Login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .Login-form {
+    width: 90%;
+    max-width: 500px;
+    padding: 20px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+ 
+  
+  .form-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .form-submit-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: red;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    
+  }
+  
+  .form-submit-button:hover {
+    display: block;
+    margin-top: 20px; /* add margin-top to separate the button from the radio buttons */
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: rgb(65, 1, 1);
+    color: #fff;
+    cursor: pointer;
+  }
+  

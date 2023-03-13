@@ -22,9 +22,9 @@ const Emplois = () => {
         }
         if (item.title.toLowerCase().includes(searchTerm.toLowerCase())) {
             return item;
-        } else {
-            return console.log("not found");
-        }
+          } else {
+            return null;
+          }
     });
 
     const productPerPage = 12;
@@ -76,7 +76,7 @@ const Emplois = () => {
 
                         {displayPage.map((item) => (
                             <Col lg="3" md="4" sm="6" xs="6" key={item.id} className="mb-4">
-                                <ProductCard item={item} />
+                                <ProductCard item={item}/>
                             </Col>
                         ))}
 

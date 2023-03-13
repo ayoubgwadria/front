@@ -35,7 +35,11 @@ export const register = (formData,navigate) => async (dispatch) => {
   try {
     const res = await axios.post("http://localhost:3001/api/users/register", formData);
     dispatch(registerSuccess(res.data.message));
-    navigate("/login")
+    if (formData.usertype === "client") {
+      navigate("/login");
+    } else if (formData.usertype === "Technicien") {
+      navigate("/home");
+    }
   } catch (err) {
     dispatch(registerFailure(err.response.data.message));
   }

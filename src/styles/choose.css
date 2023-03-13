@@ -1,0 +1,109 @@
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin-top: -180px; /* add negative margin to lift the form up */
+  }
+  
+  .signup-form {
+    border: 2px solid   rgb(97, 12, 12);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 80%;
+    max-width: 1000px;
+    height: 70%;
+    display: flex;
+    flex-direction: column; /* change flex-direction to column */
+    align-items: center; /* add align-items to center the content vertically */
+  }
+  
+  .signup-radio-container {
+    padding-top: 20px;
+    margin-left: 20px;;
+    margin-right: 20px;
+    margin-bottom: 20px; /* add margin-bottom to separate the radio buttons */
+    width: 70%;
+    max-width: 700px;
+  }
+  
+  .signup-radio-box {
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: row; /* change flex-direction to row */
+    align-items: center;
+    justify-content: space-between; /* add justify-content to separate the radio buttons */
+    width: 49%; /* change width to 45% to make the two radio boxes fit side by side */
+    margin-bottom: 20px; /* add margin-bottom to separate the radio buttons */
+    height: 250px; /* add height to make the two radio boxes square */
+    display: 'inline-block'
+    
+  }
+  
+  .signup-radio-container label {
+    display: block;
+    margin-top: 10px;
+  }
+  
+  .signup-radio {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+  }
+  
+  .signup-radio + label {
+    position: relative;
+    cursor: pointer;
+    padding-left: 35px;
+    margin-right: 20px;
+    font-size: 16px;
+    line-height: 20px;
+  }
+  
+  .signup-radio + label:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    background-color: #fff;
+  }
+  
+  .signup-radio:checked + label:before {
+    background-color: #fff;
+    border-color: red;
+  }
+  
+  .signup-radio:checked + label:after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 7px;
+    top: 7px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: red;
+  }
+  
+  .signup-button {
+    display: block;
+    margin-top: 20px; /* add margin-top to separate the button from the radio buttons */
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: red;
+    color: #fff;
+    cursor: pointer;
+  }
+  .signup-button.disabled {
+    background-color: #ccc; /* change background color to gray */
+    cursor: not-allowed; /* change cursor to not-allowed */
+  }

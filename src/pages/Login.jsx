@@ -1,23 +1,22 @@
 import React, { useRef } from "react";
-import Helmet from "../components/Helmet/Helmet";
-import CommonSection from "../components/UI/common-section/CommonSection";
 import { Container, Row, Col } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../store/auth/LoginSlice";
-
+import "../styles/login.css"
+import heroImg from "../assets/images/hero.png"
 const Login = () => {
   const loginNameRef = useRef();
   const loginPasswordRef = useRef();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.login);
-  const {  error } = useSelector((state => state.login))
+  const { error } = useSelector((state => state.login))
   const submitHandler = async (e) => {
     e.preventDefault();
     const email = loginNameRef.current.value;
     const mot_de_passe = loginPasswordRef.current.value;
-    await dispatch(login({ email, mot_de_passe },Navigate));
+    await dispatch(login({ email, mot_de_passe }, Navigate));
 
   };
   const Navigate = () => {
@@ -25,43 +24,59 @@ const Login = () => {
   }
 
   return (
-    <Helmet title="Connexion">
-      <br /><br /><br /><br />
-      <CommonSection title="Connexion" />
-      <section>
-        <Container>
-          <Row>
-            <Col lg="6" md="6" sm="12" className="m-auto text-center">
+
+    <section>
+      <Container>
+
+        <Row>
+          <Col>
+            <Col>
+              <br /><br /><br /><br />
+              <div className="hero__img">
+                <img src={heroImg} alt="hero-img" />
+              </div>
+            </Col>
+          </Col>
+          <Col  className="m-auto text-center">
             {error && <div className="alert alert-danger">{error.toString()}</div>}
-              <form className="form mb-5" onSubmit={submitHandler}>
-                <div className="form__group">
+          <br/><br/><br/>
+            <div className="Login-container">
+              <h2 className="Login-title">Inscription</h2>
+              <br/>
+              <br />
+              <form className="Login-form" onSubmit={submitHandler}>
+                <div className="form-group">
                   <input
                     type="email"
                     placeholder="Email"
                     required
                     ref={loginNameRef}
+                    className="form-input"
                   />
                 </div>
-                <div className="form__group">
+                <div className="form-group">
                   <input
                     type="password"
                     placeholder="Password"
                     required
                     ref={loginPasswordRef}
+                    className="form-input"
                   />
                 </div>
-                <button type="submit" className="addTOCart__btn" disabled={loading}>
+                <button type="submit" className="form-submit-button" disabled={loading}>
                   {loading ? "Loading..." : "Connexion"}
                 </button>
+
               </form>
-              <Link to="/register">
+              <Link to="/choose">
                 Don't have an account? Create an account
               </Link>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-    </Helmet>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </section>
+
   );
 };
 

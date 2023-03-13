@@ -1,0 +1,27 @@
+import React from "react";
+import "../../../styles/product-card.css";
+
+const QuestionCard = (props) => {
+  const { question, answer, onChange, name, continueDisabled, onContinue } = props
+
+  return (
+    <div className="product__item d-flex align-items-center">
+      <div className="product__content">
+        <h5 className="mb-1">{question}</h5>
+        <div className="d-flex flex-column mt-2">
+          <div className="d-flex align-items-center">
+            <input type="text" name={name} value={answer} onChange={onChange} />
+          </div>
+        </div>
+        <br />
+        <div className="d-flex flex-column">
+          <button className="btn btn-primary" disabled={continueDisabled} onClick={onContinue}>
+            Continue
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default QuestionCard;
