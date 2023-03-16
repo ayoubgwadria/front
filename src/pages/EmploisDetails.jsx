@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import products from "../assets/fake-data/products";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/common-section/CommonSection";
 import { Container, Row, Col } from "reactstrap";
@@ -25,16 +25,6 @@ const EmploisDetails = () => {
 
   const relatedProduct = products.filter((item) => category === item.category);
 
-  const addItem = () => {
-    dispatch(
-      cartActions.addItem({
-        id,
-        title,
-        price,
-        image01,
-      })
-    );
-  };
 
 
   useEffect(() => {
@@ -47,7 +37,7 @@ const EmploisDetails = () => {
 
   return (
     <Helmet title="Product-details">
-      <br/><br/><br/><br/>
+      <br /><br /><br /><br />
       <CommonSection title={title} />
 
       <section>
@@ -93,10 +83,12 @@ const EmploisDetails = () => {
                 <p className="category mb-5">
                   Category: <span>{category}</span>
                 </p>
+                <Link to="/Postulation">
+                  <button className="addTOCart__btn">
+                    Postuler
+                  </button>
+                </Link>
 
-                <button onClick={addItem} className="addTOCart__btn">
-                  Postuler
-                </button>
               </div>
             </Col>
 
@@ -112,7 +104,7 @@ const EmploisDetails = () => {
                   className={` ${tab === "rev" ? "tab__active" : ""}`}
                   onClick={() => setTab("rev")}
                 >
-                Les conditions
+                  Les conditions
                 </h6>
               </div>
 
@@ -128,7 +120,7 @@ const EmploisDetails = () => {
                   </div>
 
                   <div className="review">
-                    <p className="user__name mb-0">Jhon Doe</p>                    
+                    <p className="user__name mb-0">Jhon Doe</p>
                     <p className="feedback__text">great product</p>
                   </div>
 

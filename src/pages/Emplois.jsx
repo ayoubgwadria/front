@@ -1,40 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/common-section/CommonSection";
 
 import { Container, Row, Col } from "reactstrap";
 
-import products from "../assets/fake-data/products";
+import {getallposts} from "../store/post/getallposts"
 import ProductCard from "../components/UI/product-card/ProductCard";
 import ReactPaginate from "react-paginate";
 
-import "../styles/all-foods.css";
+import "../styles/emplois.css";
 import "../styles/pagination.css";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 const Emplois = () => {
+    const dispatch = useDispatch();
     const [searchTerm, setSearchTerm] = useState("");
-
     const [pageNumber, setPageNumber] = useState(0);
+    const posts = useSelector((state) => state.getposts.posts);
+    console.log(posts)
+    useEffect(() => {
+        dispatch(getallposts());
+      }, [dispatch]);
 
-    const searchedProduct = products.filter((item) => {
+    const searchedposts = posts.filter((item) => {
         if (searchTerm.value === "") {
             return item;
         }
         if (item.title.toLowerCase().includes(searchTerm.toLowerCase())) {
             return item;
-          } else {
+        } else {
             return null;
-          }
+        }
     });
 
     const productPerPage = 12;
     const visitedPage = pageNumber * productPerPage;
-    const displayPage = searchedProduct.slice(
+    const displayPage = searchedposts.slice(
         visitedPage,
         visitedPage + productPerPage
     );
 
-    const pageCount = Math.ceil(searchedProduct.length / productPerPage);
+    const pageCount = Math.ceil(searchedposts.length / productPerPage);
 
     const changePage = ({ selected }) => {
         setPageNumber(selected);
@@ -42,15 +49,25 @@ const Emplois = () => {
 
     return (
         <Helmet title="Emplois">
-            <br/><br/><br/><br/>
+            <br /><br /><br /><br />
             <CommonSection title="Emplois" />
 
             <section>
                 <Container>
-                   
+                    <Row>
+                        <Col className="d-flex justify-content-center">
+                          <Link to="/post">
+                            <button className="post-button">
+                                Créer un emploi
+                            </button>
+                            </Link>
+                        </Col>
+                    </Row>
+                    <br />
                     <Row>
                         <Col lg="6" md="6" sm="6" xs="12">
                             <div className="search__widget d-flex align-items-center justify-content-between ">
+
                                 <input
                                     type="text"
                                     placeholder="I'm looking for...."
@@ -76,7 +93,7 @@ const Emplois = () => {
 
                         {displayPage.map((item) => (
                             <Col lg="3" md="4" sm="6" xs="6" key={item.id} className="mb-4">
-                                <ProductCard item={item}/>
+                                <ProductCard item={item} />
                             </Col>
                         ))}
 

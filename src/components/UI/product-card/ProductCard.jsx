@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../../styles/product-card.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,11 +6,12 @@ import { cartActions } from "../../../store/cart/cartSlice";
 import jwt_decode from 'jwt-decode';
 
 const ProductCard = (props) => {
-  const { id, title, image01, price } = props.item;
+  const { _id, titre, prix } = props.item;
   const dispatch = useDispatch();
   const token = useSelector((state) => state.login.token);
-  const decodedToken = jwt_decode(token);
-  const userType = decodedToken.usertype;
+  const [UserType, setUserType] = useState("")
+
+
   const navigate = useNavigate();
   const Postuler = () => {
 
@@ -19,30 +20,41 @@ const ProductCard = (props) => {
       navigate("/login");
     } else {
 
-      dispatch(cartActions.addItem({ id, title, image01, price }));
+      dispatch(cartActions.addItem({ _id,titre, prix}));
     }
   };
 
+  const decode = async () => {
+    const decodedToken = await jwt_decode(token);
+    setUserType(decodedToken.usertype)
+  }
 
+  useEffect(() => {
+    if (!!token) {
+      decode()
+    }
+  }, [token])
 
   return (
 
     <div className="product__item">
-      <div className="product__img">
-        <img src={image01} alt="product-img" className="w-50" />
-      </div>
 
       <div className="product__content">
+        taswira mte3o
+        <h6>
+         {titre}
+        </h6>
         <h5>
-          <Link to={`/emplois/${id}`}>{title}</Link>
+          {titre}
         </h5>
         <div className="d-flex align-items-center justify-content-between ">
-          <span className="product__price">${price}</span>
-          {!userType === "client" && (
+          <span className="product__price">${prix}</span>
+          <Link to={`/emplois/${_id}`}>
             <button className="addTOCart__btn" onClick={Postuler}>
-              Postuler
+              Plus de détails
             </button>
-          )}
+          </Link>
+
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ import { Container, Row, Col } from "reactstrap";
 import products from "../assets/fake-data/products";
 import ReactPaginate from "react-paginate";
 
-import "../styles/all-foods.css";
+import "../styles/emplois.css";
 import "../styles/pagination.css";
 import TechnicienCard from "../components/UI/technicien-card/TechnicienCard";
 

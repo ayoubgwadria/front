@@ -13,6 +13,8 @@ import Technicien from "../pages/Technicien";
 import TechnicienDet from "../pages/TechnicienDetails"
 import EmploisDet from "../pages/EmploisDetails";
 import Choose from "../pages/Choose";
+import Post from "../pages/Post";
+import Postulation from "../pages/Postulation";
 const Routers = () => {
   return (
     <Routes>
@@ -28,6 +30,8 @@ const Routers = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register/>} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/post" element={<Post />} />
+      <Route path="/postulation" element={<Postulation />} />
     </Routes>
   );
 };
