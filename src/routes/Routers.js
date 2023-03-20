@@ -15,6 +15,7 @@ import EmploisDet from "../pages/EmploisDetails";
 import Choose from "../pages/Choose";
 import Post from "../pages/Post";
 import Postulation from "../pages/Postulation";
+import ProfileForm from "../pages/ProfileForm";
 const Routers = () => {
   return (
     <Routes>
@@ -32,6 +33,7 @@ const Routers = () => {
       <Route path="/contact" element={<Contact />} />
       <Route path="/post" element={<Post />} />
       <Route path="/postulation" element={<Postulation />} />
+      <Route path="/profileform" element={<ProfileForm />} />
     </Routes>
   );
 };

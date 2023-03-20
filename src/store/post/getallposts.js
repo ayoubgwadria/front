@@ -10,7 +10,7 @@ const initialState = {
 export const getallpostsSlice = createSlice({
     name: "getposts",
     initialState,
-    reducer: {
+    reducers: {
         getallpostsStart: (state) => {
             state.loading = true;
             state.error = null;

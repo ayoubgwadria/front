@@ -1,151 +1,80 @@
-import React, { useState, useEffect } from "react";
-
-import products from "../assets/fake-data/products";
-import { Link, useParams } from "react-router-dom";
-import Helmet from "../components/Helmet/Helmet";
-import CommonSection from "../components/UI/common-section/CommonSection";
 import { Container, Row, Col } from "reactstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import Helmet from "../components/Helmet/Helmet";
+import { getpost } from "../store/post/getpost";
+import "../styles/emploisdet.css";
+import { useParams } from "react-router-dom";
 
-import { useDispatch } from "react-redux";
-import { cartActions } from "../store/cart/cartSlice";
-
-import "../styles/product-details.css";
-
-import ProductCard from "../components/UI/product-card/ProductCard";
 
 
 const EmploisDetails = () => {
-  const [tab, setTab] = useState("desc");
-  const { id } = useParams();
   const dispatch = useDispatch();
-
-  const product = products.find((product) => product.id === id);
-  const [previewImg, setPreviewImg] = useState(product.image01);
-  const { title, price, category, desc, image01 } = product;
-
-  const relatedProduct = products.filter((item) => category === item.category);
-
-
+  const { id } = useParams()
 
   useEffect(() => {
-    setPreviewImg(product.image01);
-  }, [product]);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [product]);
-
+    dispatch(getpost(id));
+  }, [dispatch, id]);
+  const post = useSelector((state) => state.getpost.post);
   return (
-    <Helmet title="Product-details">
-      <br /><br /><br /><br />
-      <CommonSection title={title} />
-
+    <Helmet title="Emplois">
+      <br/><br/>
       <section>
-        <Container>
+        <Row>
+          <Col md={6} className="domaine-col">
+            <div className="domaine-section">
+              <span className="domaine-label">domaine:</span>{post?.domaine}
+            </div>
+          </Col>
+        </Row>
+        <Container className="emplois-container">
+
           <Row>
-            <Col lg="2" md="2">
-              <div className="product__images ">
-                <div
-                  className="img__item mb-3"
-                  onClick={() => setPreviewImg(product.image01)}
-                >
-                  <img src={product.image01} alt="" className="w-50" />
-                </div>
-                <div
-                  className="img__item mb-3"
-                  onClick={() => setPreviewImg(product.image02)}
-                >
-                  <img src={product.image02} alt="" className="w-50" />
-                </div>
-
-                <div
-                  className="img__item"
-                  onClick={() => setPreviewImg(product.image03)}
-                >
-                  <img src={product.image03} alt="" className="w-50" />
-                </div>
+            <Col md={6}>
+              <h3 className="name">{post?.creator.nom} {post?.creator.prenom}</h3>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={7}>
+              <h2 className="post-title">{post?.titre}</h2>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <div className="description-box">
+                <h4 className="description-title">Description</h4>
+                <p className="description-text">{post?.description}</p>
               </div>
             </Col>
-
-            <Col lg="4" md="4">
-              <div className="product__main-img">
-                <img src={previewImg} alt="" className="w-100" />
+          </Row>
+          <Row>
+            <Col>
+              <div className="conditions-box">
+                <h4 className="conditions-title">Conditions</h4>
+                <ul className="conditions-list">
+                  <li>Minimum 2 ans d'expérience</li>
+                  <li>Maîtrise de la langue française et anglaise</li>
+                  <li>Connaissance des outils informatiques</li>
+                </ul>
               </div>
             </Col>
+          </Row>
 
-            <Col lg="6" md="6">
-              <div className="single__product-content">
-                <h2 className="product__title mb-3">{title}</h2>
-                <p className="product__price">
-                  {" "}
-                  Price: <span>${price}</span>
-                </p>
-                <p className="category mb-5">
-                  Category: <span>{category}</span>
-                </p>
-                <Link to="/Postulation">
-                  <button className="addTOCart__btn">
-                    Postuler
-                  </button>
-                </Link>
-
-              </div>
+          <Row>
+            <Col className="prix-col" style={{ marginTop: "10px" }}>
+              <h4>Prix</h4>
+              <p>{post?.prix}DT</p>
             </Col>
 
-            <Col lg="12">
-              <div className="tabs d-flex align-items-center gap-5 py-3">
-                <h6
-                  className={` ${tab === "desc" ? "tab__active" : ""}`}
-                  onClick={() => setTab("desc")}
-                >
-                  Description
-                </h6>
-                <h6
-                  className={` ${tab === "rev" ? "tab__active" : ""}`}
-                  onClick={() => setTab("rev")}
-                >
-                  Les conditions
-                </h6>
-              </div>
-
-              {tab === "desc" ? (
-                <div className="tab__content">
-                  <p>{desc}</p>
-                </div>
-              ) : (
-                <div className="tab__form mb-3">
-                  <div className="review pt-5">
-                    <p className="user__name mb-0">Jhon Doe</p>
-                    <p className="feedback__text">great product</p>
-                  </div>
-
-                  <div className="review">
-                    <p className="user__name mb-0">Jhon Doe</p>
-                    <p className="feedback__text">great product</p>
-                  </div>
-
-                  <div className="review">
-                    <p className="user__name mb-0">Jhon Doe</p>
-                    <p className="feedback__text">great product</p>
-                  </div>
-                </div>
-              )}
+            <Col>
+              <br />
+              <button className="postuler-button" variant="primary">Postuler</button>
             </Col>
-
-            <Col lg="12" className="mb-5 mt-4">
-              <h2 className="related__Product-title">You might also like</h2>
-            </Col>
-
-            {relatedProduct.map((item) => (
-              <Col lg="3" md="4" sm="6" xs="6" className="mb-4" key={item.id}>
-                <ProductCard item={item} />
-              </Col>
-            ))}
           </Row>
         </Container>
       </section>
     </Helmet>
   );
-};
+}
 
 export default EmploisDetails;

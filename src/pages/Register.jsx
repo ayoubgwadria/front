@@ -5,6 +5,7 @@ import heroImg from "../assets/images/hero.png"
 import { Container, Row, Col } from "reactstrap";
 import { register } from "../store/auth/RegisterSlice";
 import { useNavigate } from 'react-router-dom';
+import { SetRegisterData } from '../store/props/registerdata';
 
 function Register() {
     const UserType = useSelector((state) => state.UserType.isClient);
@@ -16,8 +17,7 @@ function Register() {
     const emplacementRef = useRef();
     const longitudeRef = useRef();
     const latitudeRef = useRef();
-    const navigate=useNavigate();
-
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const submitHandler = (e) => {
@@ -34,8 +34,16 @@ function Register() {
             usertype: UserType,
         };
 
-        dispatch(register(formData,navigate));
+        if (UserType == "client") { dispatch(register(formData, navigate)) }
+        else if (UserType == "Technicien") {
+
+            dispatch(SetRegisterData(formData));
+
+            navigate("/profileform");
+
+        }
     };
+
     return (
         <section>
             <Container>

@@ -1,40 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/common-section/CommonSection";
-
 import { Container, Row, Col } from "reactstrap";
-
-import products from "../assets/fake-data/products";
 import ReactPaginate from "react-paginate";
-
 import "../styles/emplois.css";
 import "../styles/pagination.css";
 import TechnicienCard from "../components/UI/technicien-card/TechnicienCard";
+import { getalltechniciens } from "../store/technicien/getalltechniciens"
+import { useDispatch, useSelector } from "react-redux";
 
 const Technicien = () => {
-  const [searchTerm, setSearchTerm] = useState("");
 
+  const dispatch = useDispatch();
+  const [searchTerm, setSearchTerm] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
 
-  const searchedProduct = products.filter((item) => {
+  const techniciens = useSelector((state) => state.gettechniciens.techniciens);
+  console.log(techniciens)
+  useEffect(() => {
+    dispatch(getalltechniciens());
+  }, [dispatch]);
+
+  const searchedtechniciens = techniciens.filter((item) => {
     if (searchTerm.value === "") {
       return item;
     }
-    if (item.title.toLowerCase().includes(searchTerm.toLowerCase())) {
+    if (item.emplacement.toLowerCase().includes(searchTerm.toLowerCase())) {
       return item;
     } else {
-      return console.log("not found");
+      return null;
     }
   });
 
-  const productPerPage = 12;
-  const visitedPage = pageNumber * productPerPage;
-  const displayPage = searchedProduct.slice(
+  const techniciensPerPage = 12;
+  const visitedPage = pageNumber * techniciensPerPage;
+  const displayPage = searchedtechniciens.slice(
     visitedPage,
-    visitedPage + productPerPage
+    visitedPage + techniciensPerPage
   );
 
-  const pageCount = Math.ceil(searchedProduct.length / productPerPage);
+  const pageCount = Math.ceil(searchedtechniciens.length / techniciensPerPage);
 
   const changePage = ({ selected }) => {
     setPageNumber(selected);
@@ -42,7 +47,7 @@ const Technicien = () => {
 
   return (
     <Helmet title="Technicien">
-      <br/><br/><br/><br/>
+      <br /><br /><br /><br />
       <CommonSection title="Technicien" />
 
       <section>

@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useDispatch } from "react-redux";
 import { Link } from 'react-router-dom';
 import "../styles/choose.css"
-import {SetUserType} from "../store/reducers/Isclient"
+import {SetUserType} from "../store/props/Isclient"
 function Choose() {
-  const [isClient, setIsClient] = useState(null); // default value is null
+  const [isClient, setIsClient] = useState(null); 
   const dispatch=useDispatch()
   function handleJoinAsClientClick() {
     setIsClient(true);  

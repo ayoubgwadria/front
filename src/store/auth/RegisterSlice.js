@@ -6,6 +6,7 @@ const initialState = {
   loading: false,
   error: null,
   successMessage: null,
+  userId: null,
 };
   
 export const registerSlice = createSlice({
@@ -20,6 +21,7 @@ export const registerSlice = createSlice({
     registerSuccess: (state, action) => {
       state.loading = false;
       state.successMessage = action.payload;
+      state.userId = action.payload.userId;
     },
     registerFailure: (state, action) => {
       state.loading = false;
@@ -35,10 +37,10 @@ export const register = (FormData,navigate) => async (dispatch) => {
   try {
     const res = await axios.post("http://localhost:3001/api/users/register", FormData);
     dispatch(registerSuccess(res.data.message));
-    if (formData.usertype === "client") {
+    if (FormData.usertype === "client") {
       navigate("/login");
-    } else if (formData.usertype === "Technicien") {
-      navigate("/home");
+    } else if (FormData.usertype === "Technicien") {
+      navigate("/login");
     }
   } catch (err) {
     dispatch(registerFailure(err.response.data.message));

@@ -18,7 +18,8 @@ const Emplois = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [pageNumber, setPageNumber] = useState(0);
     const posts = useSelector((state) => state.getposts.posts);
-    console.log(posts)
+    
+
     useEffect(() => {
         dispatch(getallposts());
       }, [dispatch]);
@@ -27,7 +28,7 @@ const Emplois = () => {
         if (searchTerm.value === "") {
             return item;
         }
-        if (item.title.toLowerCase().includes(searchTerm.toLowerCase())) {
+        if (item.titre.toLowerCase().includes(searchTerm.toLowerCase())) {
             return item;
         } else {
             return null;
@@ -92,7 +93,7 @@ const Emplois = () => {
                         </Col>
 
                         {displayPage.map((item) => (
-                            <Col lg="3" md="4" sm="6" xs="6" key={item.id} className="mb-4">
+                            <Col lg="3" md="4" sm="6" xs="6" key={item._id} className="mb-4">
                                 <ProductCard item={item} />
                             </Col>
                         ))}

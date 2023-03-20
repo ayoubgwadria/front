@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addpost } from "../store/post/addpost";
 import jwt_decode from 'jwt-decode';
@@ -9,15 +9,17 @@ function Post() {
   const descriptionRef = useRef();
   const domaineRef = useRef();
   const prixRef = useRef();
+  const [message, setMessage] = useState(null);
 
   const token = useSelector((state) => state.login.token)
-
+  const success = useSelector((state) => state.AddPost.successMessage)
+  const failure = useSelector((state) => state.AddPost.error)
   const dispatch = useDispatch();
 
   const submitHandler = async (e) => {
     e.preventDefault();
     const decodedToken = await jwt_decode(token);
-    
+
     const FormData = {
       titre: titreRef.current.value,
       description: descriptionRef.current.value,
@@ -25,12 +27,18 @@ function Post() {
       prix: prixRef.current.value,
       userid: decodedToken.id,
     };
-    dispatch(addpost(FormData))
-  };
 
+    await dispatch(addpost(FormData))
+
+  }
+  useEffect(() => {
+    if (failure != null) { setMessage('Erreur lors de la création du post') }
+    if (success != null) { setMessage('Post créé avec succès') }
+  }, [success, failure])
   return (
     <section>
       <br /><br /><br /><br />
+      {message && <div className="alert alert-danger">{message}</div>}
       <form className="post-form" onSubmit={submitHandler}>
         <label htmlFor="title" className="post-form-label">Titre:</label>
         <input
