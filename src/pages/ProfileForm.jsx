@@ -5,33 +5,43 @@ import { Container, Row, Col } from 'reactstrap';
 import Helmet from '../components/Helmet/Helmet';
 import { register } from "../store/auth/RegisterSlice";
 import { addprofile } from "../store/profile/addprofile";
-
+import {login} from "../store/auth/LoginSlice"
 function ProfileForm() {
 
   const FormData = useSelector((state) => state.registerData.data);
-  const userId = useSelector ((state)=>state.register.userId);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const domaineRef = useRef();
   const formationRef = useRef();
-  const experience_professionnelleRef = useRef();
   const compétencesRef = useRef();
   const disponibilitéRef = useRef();
   const langueRef = useRef();
+  const bioRef = useRef();
+
+  
 
   const submitHandler = (e) => {
     e.preventDefault();
     const formProfile = {
       formation: formationRef.current.value,
-      experience_professionnelle: experience_professionnelleRef.current.value,
       compétences: compétencesRef.current.value,
       disponibilité: disponibilitéRef.current.value,
       langue: langueRef.current.value,
+      domaine: domaineRef.current.value,
+      bio:  bioRef.current.value,
     };
-  dispatch(register(FormData, navigate))
-    .then(() => dispatch(addprofile({formProfile, userId})))
-    .catch((error) => console.log(error));
-  }
+    const email = FormData.email;
+    const mot_de_passe = FormData.mot_de_passe;
+  
+    dispatch(register(FormData, navigate))
+      .then(() => dispatch(login({ email, mot_de_passe })))
+      .then(() => dispatch(addprofile( formProfile )))
+      .catch((error) => console.log(error));
+  };
+  
+
   return (
     <Helmet title="Technicien">
       <br /><br /><br /><br /><br />
@@ -45,21 +55,21 @@ function ProfileForm() {
         <Row>
           <Col>
             <form onSubmit={submitHandler} >
+            <div className="form-group">
+                <label>Domaine:</label>
+
+                <textarea className="form-control"
+                  ref={domaineRef}
+                  name="domaine"
+                  required
+                />
+              </div>
               <div className="form-group">
                 <label>Formation et formation professionnelle:</label>
 
                 <textarea className="form-control"
                   ref={formationRef}
                   name="formation"
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>Expérience professionnelle:</label>
-
-                <textarea className="form-control"
-                  ref={experience_professionnelleRef}
-                  name="experience_professionnelle"
                   required
                 />
               </div>
@@ -78,6 +88,15 @@ function ProfileForm() {
                 <textarea className="form-control"
                   ref={disponibilitéRef}
                   name="disponibilité"
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>à propos de toi:</label>
+
+                <textarea className="form-control"
+                  ref={bioRef}
+                  name="bio"
                   required
                 />
               </div>

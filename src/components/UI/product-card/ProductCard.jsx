@@ -13,17 +13,7 @@ const ProductCard = (props) => {
 
 
   const navigate = useNavigate();
-  const Postuler = () => {
-
-    if (!token) {
-
-      navigate("/login");
-    } else {
-
-      dispatch(cartActions.addItem({ _id,titre, prix}));
-    }
-  };
-
+  
   const decode = async () => {
     const decodedToken = await jwt_decode(token);
     setUserType(decodedToken.usertype)
@@ -49,7 +39,7 @@ const ProductCard = (props) => {
         <div className="d-flex align-items-center justify-content-between ">
           <span className="product__price">${prix}</span>
           <Link to={`/emplois/${_id}`}>
-            <button className="addTOCart__btn" onClick={Postuler}>
+            <button className="addTOCart__btn">
               Plus de détails
             </button>
           </Link>

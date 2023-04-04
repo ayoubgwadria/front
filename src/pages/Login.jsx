@@ -16,12 +16,12 @@ const Login = () => {
     e.preventDefault();
     const email = loginNameRef.current.value;
     const mot_de_passe = loginPasswordRef.current.value;
-    await dispatch(login({ email, mot_de_passe }, Navigate));
-
-  };
-  const Navigate = () => {
+    await dispatch(login({ email, mot_de_passe }));
     navigate("/home")
-  }
+  };
+
+   
+
 
   return (
 

@@ -35,7 +35,7 @@ export const { getalltechniciensStart, getalltechniciensSuccess, getalltechnicie
 export const getalltechniciens = () => async (dispatch) => {
     dispatch(getalltechniciensStart());
     try {
-        const response = await axios.get("http://localhost:3001/api/users/gettechniciens");
+        const response = await axios.get(`http://localhost:3001/api/profile/findAllProfile`);
         dispatch(getalltechniciensSuccess(response.data));
     } catch (error) {
         dispatch(getalltechniciensFailure(error.res.data.message));

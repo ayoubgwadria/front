@@ -1,16 +1,18 @@
-import { Container, Row, Col } from "reactstrap";
+import { Card, Container, Row, Col } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import Helmet from "../components/Helmet/Helmet";
 import { getpost } from "../store/post/getpost";
 import "../styles/emploisdet.css";
-import { useParams } from "react-router-dom";
-
+import { Link, useParams } from "react-router-dom";
+import pict from "../assets/images/ava-1.jpg";
 
 
 const EmploisDetails = () => {
   const dispatch = useDispatch();
-  const { id } = useParams()
+  const technicienId = useSelector((state) => state.login.id)
+  const { id } = useParams();
+  const postId = id;
 
   useEffect(() => {
     dispatch(getpost(id));
@@ -18,60 +20,65 @@ const EmploisDetails = () => {
   const post = useSelector((state) => state.getpost.post);
   return (
     <Helmet title="Emplois">
-      <br/><br/>
+      <br />
       <section>
-        <Row>
-          <Col md={6} className="domaine-col">
-            <div className="domaine-section">
-              <span className="domaine-label">domaine:</span>{post?.domaine}
-            </div>
-          </Col>
-        </Row>
-        <Container className="emplois-container">
 
+        <Card className="card_emp">
           <Row>
-            <Col md={6}>
-              <h3 className="name">{post?.creator.nom} {post?.creator.prenom}</h3>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={7}>
-              <h2 className="post-title">{post?.titre}</h2>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <div className="description-box">
-                <h4 className="description-title">Description</h4>
-                <p className="description-text">{post?.description}</p>
+            <Col md="1">
+              <div className="emp_domaine">
+                {post?.domaine}
               </div>
             </Col>
-          </Row>
-          <Row>
-            <Col>
-              <div className="conditions-box">
-                <h4 className="conditions-title">Conditions</h4>
-                <ul className="conditions-list">
-                  <li>Minimum 2 ans d'expérience</li>
-                  <li>Maîtrise de la langue française et anglaise</li>
-                  <li>Connaissance des outils informatiques</li>
-                </ul>
+            <Col className="emp_date">
+              <div>
+                {post?.date ? post.date.slice(0, 10) : ''}
               </div>
             </Col>
+
           </Row>
 
-          <Row>
-            <Col className="prix-col" style={{ marginTop: "10px" }}>
-              <h4>Prix</h4>
-              <p>{post?.prix}DT</p>
-            </Col>
+          <Container>
 
-            <Col>
-              <br />
-              <button className="postuler-button" variant="primary">Postuler</button>
-            </Col>
-          </Row>
-        </Container>
+            <Row>
+              <Col md="4" className="client_empiinf">
+                <div >
+
+                  <div>
+                    <img alt="..." className="emp_img" src={pict} />
+                  </div>
+                  <h3 className="emp_name">
+                    {post?.creator.nom}<span> {post?.creator.prenom}</span>
+                  </h3>
+                  <br />
+                </div>
+              </Col>
+
+              <Col md="8" className="emp-info">
+                <div className="emp_titre">
+                  <h3>{post?.titre}</h3>
+                </div>
+                <Card className="card_emp"> <br />
+
+                  <div className="info-block">
+                    <h5>Description:</h5>
+                    <p >{post?.description}</p>
+                  </div>
+                  <div className="info-block">
+                    <h5>Condition:</h5>
+                    <p >{post?.condition}</p>
+                  </div>
+                  <div className="emp_prix">
+                    <h5>{post?.prix}.DT</h5>
+                  </div>
+                  <Link to={`/postulation/${postId}/${technicienId}`} >
+                    <button className="btn_contacter">postuler</button>
+                  </Link>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </Card>
       </section>
     </Helmet>
   );

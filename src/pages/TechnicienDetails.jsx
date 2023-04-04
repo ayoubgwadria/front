@@ -1,67 +1,79 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, Container, Row, Col } from "reactstrap";
-import profile from "../assets/images/ava-1.jpg";
-import "../styles/product-card.css";
-const Technicien = () => {
-  return (
-    <>
-      <section className="section">
-        <Container>
-        <br/><br/>
-          <Card className="card-profile shadow mt--300">
-            <div className="px-4">
-              <Row className="justify-content-center">
-                <Col className="order-lg-2" lg="3">
-                  <div className="card-profile-image mx-auto">
-                    <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                      <img
-                        alt="..."
-                        className="rounded-circle "
-                        src={profile}
-                        width="240" height="240"
-                      />
-                    </a>
-                  </div>
-                </Col>
-              </Row>
-              <div className="text-center mt-5">
-                <h3>
-                  ala walhazi
-                  <span className="font-weight-light"> , 27</span>
-                </h3><br />
-                <div className="text-center h6 font-weight-300" style={{ textAlign: 'left' }}>
-                  Ben Arous, Fouchena <br />
-                  55895371 <br />
-                  Soudure <br />
-                  University of Computer Science
-                </div>
+import pict from "../assets/images/ava-1.jpg";
+import "../styles/technicieninfo.css";
+import { getprofile } from "../store/profile/getprofile";
+import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import Helmet from "../components/Helmet/Helmet";
+import {IoLocation} from "react-icons/io5"
 
-                <br />
-                <button className="addTOCart__btn" >
-                  Contacter
-                </button>
-              </div>
-              <div className="mt-5 py-5 border-top text-center">
-                <Row className="justify-content-center">
-                  <Col lg="9">
-                    <p>
-                      An artist of considerable range, Ryan — the name taken
-                      by Melbourne-raised, Brooklyn-based Nick Murphy —
-                      writes, performs and records all of his own music,
-                      giving it a warm, intimate feel with a solid groove
-                      structure. An artist of considerable range.
-                    </p>
-                    <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                      Show more
-                    </a>
-                  </Col>
-                </Row>
-              </div>
-            </div>
-          </Card>
-        </Container>
+
+const Technicien = () => {
+  const dispatch = useDispatch();
+  const { _id } = useParams()
+  console.log(_id)
+  useEffect(() => {
+    dispatch(getprofile(_id));
+  }, [dispatch]);
+
+  const profile = useSelector((state) => state.getprofile.profile);
+
+  return (
+    <Helmet title="Technicien information">
+      <br />
+      <section> 
+        <Card className="card_tech">
+          <Container>
+            <Row>
+              <Col md="8" className="profile-info">
+                <Card className="card_tech"> <br />
+                  <div className="info-block">
+                    <h5>Domaine:</h5>
+                    <p className="domaine">{profile?.domaine}</p>
+                  </div>
+                  <div className="info-block">
+                    <h5>Formation:</h5>
+                    <p className="formation">{profile?.formation}</p>
+                  </div>
+                  <div className="info-block">
+                    <h5>Compétences:</h5>
+                    <p className="competences">{profile?.compétences}</p>
+                  </div>
+                  <div className="info-block">
+                    <h5>Disponibilité:</h5>
+                    <p className="disponibilite">{profile?.disponibilité}</p>
+                  </div>
+                  <div className="info-block">
+                    <h5>Langue:</h5>
+                    <p className="langue">{profile?.langue}</p>
+                  </div>
+                  <button className="btn_contacter">Contacter</button>
+                </Card>
+              </Col>
+
+              <Col>
+                <div className="tech_n">
+                  <div>
+                    <img alt="..." className="tech_img" src={pict} />
+                  </div>
+                  <h3 className="tech_name">
+                    {profile.user?.prenom}<span> {profile.user?.nom}</span>
+                  </h3>
+                  <br />
+                  <div className="apropos_tech" >
+                    <h5 >a propos de moi :</h5>
+                    <p>{profile?.bio}</p>
+                  </div>
+                </div>
+              </Col>
+
+
+            </Row>
+          </Container>
+        </Card>
       </section>
-    </>
+    </Helmet>
   );
 };
 

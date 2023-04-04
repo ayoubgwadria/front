@@ -5,6 +5,7 @@ const initialState = {
   loading: false,
   error: null,
   post: null,
+ 
 };
 
 export const getpostSlice = createSlice({
@@ -20,6 +21,7 @@ export const getpostSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.post = action.payload;
+
     },
     getpostFailure: (state, action) => {
       state.loading = false;

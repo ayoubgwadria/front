@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios"
-
+import { gettechpost } from "../postulation/gettechpost";
+import { getclientpost } from "../postulation/getclientpostulation";
 const initialState = {
   user: null,
   token: null,
   error: null,
   loading: false,
+  id: null,
 };
 
 export const loginSlice = createSlice({
@@ -17,8 +19,9 @@ export const loginSlice = createSlice({
     },
     loginSuccess: (state, action) => {
       state.loading = false;
-      state.user = action.payload.user;
+      state.user = action.payload.usertype;
       state.token = action.payload.token;
+      state.id = action.payload.id;
     },
     loginFailure: (state, action) => {
       state.loading = false;
@@ -33,13 +36,20 @@ export const loginSlice = createSlice({
   },
 });
 
-export const login = (formData,callback) => async (dispatch) => {
+export const login = (formData) => async (dispatch,getState) => {
   dispatch(loginRequest());
 
   try {
     const res = await axios.post("http://localhost:3001/api/users/login", formData);
-    dispatch(loginSuccess({ user: res.data.user, token: res.data.token }));
-    callback();
+    await dispatch(loginSuccess(res.data));
+ 
+    if (getState().login.user === 'client') {
+      console.log('Dispatching getclientpost');
+      dispatch(getclientpost(res.data.id));
+    } else {
+      console.log('Dispatching gettechpost');
+      dispatch(gettechpost(res.data.id));
+    }
   } catch (err) {
     dispatch(loginFailure(err.response.data.message));
   }

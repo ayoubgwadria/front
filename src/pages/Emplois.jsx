@@ -4,31 +4,34 @@ import CommonSection from "../components/UI/common-section/CommonSection";
 
 import { Container, Row, Col } from "reactstrap";
 
-import {getallposts} from "../store/post/getallposts"
+import { getallposts } from "../store/post/getallposts"
 import ProductCard from "../components/UI/product-card/ProductCard";
 import ReactPaginate from "react-paginate";
 
 import "../styles/emplois.css";
 import "../styles/pagination.css";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 const Emplois = () => {
     const dispatch = useDispatch();
-    const [searchTerm, setSearchTerm] = useState("");
+    const [TitreSearchTerm, setTitreSearchTerm] = useState("");
+    const [LieuxSearchTerm, setLieuxSearchTerm] = useState("");
+    const [DomaineSearchTerm, setDomaineSearchTerm] = useState("");
     const [pageNumber, setPageNumber] = useState(0);
     const posts = useSelector((state) => state.getposts.posts);
-    
+
 
     useEffect(() => {
         dispatch(getallposts());
-      }, [dispatch]);
+    }, [dispatch]);
 
     const searchedposts = posts.filter((item) => {
-        if (searchTerm.value === "") {
+        if (TitreSearchTerm.value === "") {
             return item;
         }
-        if (item.titre.toLowerCase().includes(searchTerm.toLowerCase())) {
+        if (item.titre.toLowerCase().includes(TitreSearchTerm.toLowerCase())
+            && item.domaine.toLowerCase().includes(DomaineSearchTerm.toLowerCase())
+            && item.lieux.includes(LieuxSearchTerm)) {
             return item;
         } else {
             return null;
@@ -55,25 +58,31 @@ const Emplois = () => {
 
             <section>
                 <Container>
-                    <Row>
-                        <Col className="d-flex justify-content-center">
-                          <Link to="/post">
-                            <button className="post-button">
-                                Créer un emploi
-                            </button>
-                            </Link>
-                        </Col>
-                    </Row>
+
                     <br />
                     <Row>
-                        <Col lg="6" md="6" sm="6" xs="12">
+                        <Col lg="3" md="6" sm="6" xs="12">
                             <div className="search__widget d-flex align-items-center justify-content-between ">
 
                                 <input
                                     type="text"
-                                    placeholder="I'm looking for...."
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    placeholder="Titre...."
+                                    value={TitreSearchTerm}
+                                    onChange={(e) => setTitreSearchTerm(e.target.value)}
+                                />
+                                <span>
+                                    <i class="ri-search-line"></i>
+                                </span>
+                            </div>
+                        </Col>
+                        <Col lg="3" md="6" sm="6" xs="12">
+                            <div className="search__widget d-flex align-items-center justify-content-between ">
+
+                                <input
+                                    type="domaine"
+                                    placeholder="Domaine...."
+                                    value={DomaineSearchTerm}
+                                    onChange={(e) => setDomaineSearchTerm(e.target.value)}
                                 />
                                 <span>
                                     <i class="ri-search-line"></i>
@@ -82,13 +91,34 @@ const Emplois = () => {
                         </Col>
                         <Col lg="6" md="6" sm="6" xs="12" className="mb-5">
                             <div className="sorting__widget text-end">
-                                <select className="w-50">
-                                    <option>Default</option>
-                                    <option value="ascending">Alphabetically, A-Z</option>
-                                    <option value="descending">Alphabetically, Z-A</option>
-                                    <option value="high-price">High Price</option>
-                                    <option value="low-price">Low Price</option>
+                                <select className="w-50" value={LieuxSearchTerm} onChange={(e) => setLieuxSearchTerm(e.target.value)}>
+                                    <option>choisissez une région</option>
+                                    <option value="Ariana">Ariana</option>
+                                    <option value="Bèja">Bèja</option>
+                                    <option value="ben Arous">ben Arous</option>
+                                    <option value="Bizerte">Bizerte</option>
+                                    <option value="Gabès">Gabès</option>
+                                    <option value="Gafsa">Gafsa</option>
+                                    <option value="Jendouba">Jendouba</option>
+                                    <option value="Kairouan">Kairouan</option>
+                                    <option value="Kasserine">Kasserine</option>
+                                    <option value="Kébili">Kébili</option>
+                                    <option value="La Manouba">La Manouba</option>
+                                    <option value="Le Kef">Le Kef</option>
+                                    <option value="Mahdia">Mahdia</option>
+                                    <option value="Medenine">Medenine</option>
+                                    <option value="Monastir">Monastir</option>
+                                    <option value="Nabeul">Nabeul</option>
+                                    <option value="Sfax">Sfax</option>
+                                    <option value="Sidi Bouzid">Sidi Bouzid</option>
+                                    <option value="Siliana">Siliana</option>
+                                    <option value="Sousse">Sousse</option>
+                                    <option value="Tataouine">Tataouine</option>
+                                    <option value="Tozeur">Tozeur</option>
+                                    <option value="Tunis">Tunis</option>
+                                    <option value="Zaghouan">Zaghouan</option>
                                 </select>
+
                             </div>
                         </Col>
 

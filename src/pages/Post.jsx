@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addpost } from "../store/post/addpost";
-import jwt_decode from 'jwt-decode';
+import { Card, Container, Row, Col } from "reactstrap";
 import '../styles/post.css';
 
 function Post() {
@@ -9,23 +9,23 @@ function Post() {
   const descriptionRef = useRef();
   const domaineRef = useRef();
   const prixRef = useRef();
+  const conditionRef = useRef();
   const [message, setMessage] = useState(null);
 
-  const token = useSelector((state) => state.login.token)
   const success = useSelector((state) => state.AddPost.successMessage)
   const failure = useSelector((state) => state.AddPost.error)
   const dispatch = useDispatch();
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const decodedToken = await jwt_decode(token);
+
 
     const FormData = {
       titre: titreRef.current.value,
       description: descriptionRef.current.value,
       domaine: domaineRef.current.value,
       prix: prixRef.current.value,
-      userid: decodedToken.id,
+      condition: conditionRef.current.value,
     };
 
     await dispatch(addpost(FormData))
@@ -37,42 +37,79 @@ function Post() {
   }, [success, failure])
   return (
     <section>
-      <br /><br /><br /><br />
-      {message && <div className="alert alert-danger">{message}</div>}
-      <form className="post-form" onSubmit={submitHandler}>
-        <label htmlFor="title" className="post-form-label">Titre:</label>
-        <input
-          name="titre"
-          ref={titreRef}
-          type="text"
-          className="post-form-input"
-        />
+      <br/><br/><br/>
+      <div className='post_titre'>
+        <h3>Créer un emploi</h3>
+      </div>
+      <br/>  
+      <Container>
+      {message && <Card body className="bg-danger justify-content-center align-items-center">{message}</Card>}
+       <br/>
+        <form onSubmit={submitHandler}>
+          <Row>
+            <Col>
+              <label htmlFor="title" className="post-form-label">Titre:</label>
+              <input
+                name="titre"
+                ref={titreRef}
+                type="text"
+                className="form-control"
+              />
+            </Col>
+            <Col>
+              <label htmlFor="domain" className="post-form-label">Domain:</label>
+              <input
+                type="text"
+                className="form-control"
+                ref={domaineRef}
+                name="domaine"
+              />
+            </Col>
+          </Row>
 
-        <label htmlFor="description" className="post-form-label">Description:</label>
-        <textarea
-          ref={descriptionRef}
-          className="post-form-textarea"
-          name="description"
-        />
+          <Row>
+            <Col>
+              <label htmlFor="description" className="post-form-label">Description:</label>
+              <textarea
+                ref={descriptionRef}
+                className="form-control"
+                name="description"
+              />
+            </Col>
+          </Row>
 
-        <label htmlFor="domain" className="post-form-label">Domain:</label>
-        <input
-          type="text"
-          className="post-form-input"
-          ref={domaineRef}
-          name="domaine"
-        />
+          <Row>
+            <Col>
+              <label htmlFor="condition" className="post-form-label">Condition:</label>
+              <textarea
+                ref={conditionRef}
+                className="form-control"
+                name="condition"
+              />
+            </Col>
+          </Row>
 
-        <label htmlFor="price" className="post-form-label">Prix:</label>
-        <input
-          ref={prixRef}
-          type="number"
-          className="post-form-input"
-          name="prix"
-        />
+          <Row>
+            <Col>
+              <label htmlFor="price" className="post-form-label">Prix:</label>
+              <input
+                ref={prixRef}
+                type="number"
+                className="form-control"
+                name="prix"
+              />
+            </Col>
+          </Row>
+            <br/>
+          <Row>
+            <Col className="col_poster">
+              <button type="submit" className="btn_poster">Poster</button>
+            </Col>
+          </Row>
+        </form>
+      </Container>
 
-        <button type="submit" className="post-form-button">Poster</button>
-      </form>
+
     </section>
   );
 }

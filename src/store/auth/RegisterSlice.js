@@ -6,7 +6,6 @@ const initialState = {
   loading: false,
   error: null,
   successMessage: null,
-  userId: null,
 };
   
 export const registerSlice = createSlice({
@@ -21,7 +20,6 @@ export const registerSlice = createSlice({
     registerSuccess: (state, action) => {
       state.loading = false;
       state.successMessage = action.payload;
-      state.userId = action.payload.userId;
     },
     registerFailure: (state, action) => {
       state.loading = false;
