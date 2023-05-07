@@ -7,38 +7,40 @@ const initialState = {
   posts: [],
 };
 
-export const getclientpostSlice = createSlice({
+export const getclientpostulationSlice = createSlice({
   name: "getclientpost",
   initialState,
   reducers: {
-    getclientpostStart: (state) => {
+    getclientpostulationStart: (state = initialState) => {
+
       state.loading = true;
-      state.error =null;
+      state.error = null;
       state.posts = [];
     },
-    getclientpostSuccess: (state, action) => {
+    getclientpostulationSuccess: (state, action) => {
       state.loading = false;
       state.error = null;
       state.posts = action.payload;
     },
-    getclientpostFailure: (state, action) => {
+    getclientpostulationFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
-      state.posts= [];
+      state.posts = [];
     },
   },
 });
 
-export const { getclientpostStart, getclientpostSuccess, getclientpostFailure } = getclientpostSlice.actions;
+export const { getclientpostulationStart, getclientpostulationSuccess, getclientpostulationFailure } = getclientpostulationSlice.actions;
 
-export const getclientpost = (clientId) => async (dispatch) => {
-  dispatch(getclientpostStart());
+export const getclientpostulations = (clientId) => async (dispatch) => {
+  dispatch(getclientpostulationStart());
   try {
-    const response = await axios.get( `http://localhost:3001/api/postulations/postclient/${clientId}`);
-    dispatch(getclientpostSuccess(response.data));
+    const response = await axios.get(`http://localhost:3001/api/postulations/postclient/${clientId}`);
+    console.log('responce data', response.data)
+    dispatch(getclientpostulationSuccess(response.data));
   } catch (error) {
-    dispatch(getclientpostFailure(error.response.data.message));
+    dispatch(getclientpostulationFailure(error.response.data.message));
   }
 };
 
-export default getclientpostSlice;
+export default getclientpostulationSlice;

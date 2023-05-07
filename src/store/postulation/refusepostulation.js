@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import {getclientpost} from "./getclientpostulation";
+import { getclientpostulations } from "./getclientpostulation";
 
 const initialState = {
   loading: false,
@@ -36,8 +36,8 @@ export const refusepostulation = (id) => async (dispatch) => {
   dispatch(refusepostulationStart());
   try {
     const res = await axios.put(`http://localhost:3001/api/postulations/${id}/refuse`);
-    dispatch(refusepostulationSuccess({ message: res.data.message, postulation: res.data.postulation })); 
-    dispatch(getclientpost(res.data.postulation.clientId))
+    dispatch(refusepostulationSuccess({ message: res.data.message, postulation: res.data.postulation }));
+    dispatch(getclientpostulations(res.data.postulation.clientId))
   } catch (err) {
     dispatch(refusepostulationFailure(err.res.data.message));
   }

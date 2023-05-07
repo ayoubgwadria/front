@@ -17,25 +17,27 @@ import Post from "../pages/Post";
 import Postulation from "../pages/Postulation";
 import ProfileForm from "../pages/ProfileForm";
 import ClientPosts from "../pages/ClientPosts";
+import Chatroom from "../pages/Chatroom";
 const Routers = () => {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/home" />} />
       <Route path="/home" element={<Home />} />
-      <Route path="/technicien" element={<Technicien/>} />
-      <Route path="/choose" element={<Choose/>} />
+      <Route path="/technicien" element={<Technicien />} />
+      <Route path="/choose" element={<Choose />} />
       <Route path="/emplois" element={<Emplois />} />
-      <Route path="/emplois/:id" element={<EmploisDet/>} />
-      <Route path="/technicien/:_id" element={<TechnicienDet/>} />
+      <Route path="/emplois/:id" element={<EmploisDet />} />
+      <Route path="/technicien/:_id" element={<TechnicienDet />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register/>} />
+      <Route path="/register" element={<Register />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/post" element={<Post />} />
       <Route path="/postulation/:postId/:technicienId" element={<Postulation />} />
       <Route path="/profileform" element={<ProfileForm />} />
-      <Route path="/clientposts/:clientId" element={<ClientPosts/>} />
+      <Route path="/clientposts/:clientId" element={<ClientPosts />} />
+      <Route path='/chatroom/:id' element={<Chatroom />} />
     </Routes>
   );
 };
