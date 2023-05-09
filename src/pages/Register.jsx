@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../styles/register.css";
 import heroImg from "../assets/images/hero.png";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col, Input } from "reactstrap";
 import { register } from "../store/auth/RegisterSlice";
 import { useNavigate } from "react-router-dom";
 import { SetRegisterData } from "../store/props/registerdata";
@@ -12,6 +12,8 @@ import Map from "./Map";
 function Register() {
   const UserType = useSelector((state) => state.UserType.isClient);
   const [modal, setModal] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [preview, setPreview] = useState("");
   const [Error, setError] = useState({});
   const nomRef = useRef();
   const prenomRef = useRef();
@@ -24,46 +26,35 @@ function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const toggle = () => setModal(!modal);
-
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setImageFile(file);
+    setPreview(URL.createObjectURL(event.target.files[0]));
+  };
   const submitHandler = (e) => {
     e.preventDefault();
-    const verfi = validation();
 
-    if (verfi) {
-      const formData = {
-        nom: nomRef.current.value,
-        prenom: prenomRef.current.value,
-        email: emailRef.current.value,
-        mot_de_passe: motDePasseRef.current.value,
-        telephone: telephoneRef.current.value,
-        emplacement: emplacementRef.current.value,
-        longitude: longitudeRef.current,
-        latitude: latitudeRef.current,
-        usertype: UserType,
-      };
-      console.log("form data ", formData);
-      /*  if (UserType == "client") {
+    const formData = new FormData();
+    formData.append("image", imageFile);
+    formData.append("nom", nomRef.current.value);
+    formData.append("prenom", prenomRef.current.value);
+    formData.append("email", emailRef.current.value);
+    formData.append("mot_de_passe", motDePasseRef.current.value);
+    formData.append("telephone", telephoneRef.current.value);
+    formData.append("emplacement", emplacementRef.current.value);
+    formData.append("longitude", longitudeRef.current);
+    formData.append("latitude", latitudeRef.current);
+    formData.append("usertype", UserType);
+    console.log("form data ", formData);
+    if (UserType == "client") {
       dispatch(register(formData, navigate));
     } else if (UserType == "Technicien") {
       dispatch(SetRegisterData(formData));
 
       navigate("/profileform");
-    } */
     }
   };
-  const validation = () => {
-    const errobj = {};
-    var verif = true;
 
-    if (!nomRef.current.value) {
-      errobj.nom = "Nom oblicagatoire";
-      console.log("ref nom,", nomRef.current.value);
-      verif = false;
-      setError(errobj);
-      return verif;
-    }
-  };
-  console.log("latiture ", Error);
   return (
     <section>
       <Container>
@@ -170,6 +161,26 @@ function Register() {
                     style={{ cursor: "pointer" }}
                   />
                 </div>
+                <Row>
+                  <Col>
+                    <label htmlFor="price" className="post-form-label">
+                      Image:
+                    </label>
+                    <Input
+                      id="exampleFile"
+                      name="file"
+                      type="file"
+                      onChange={handleImageChange}
+                    />
+                  </Col>
+                </Row>
+                <br />
+                <Row>
+                  <Col>
+                    {preview && <img src={preview} alt="Preview" width={100} />}
+                  </Col>
+                </Row>
+
                 <button
                   onClick={submitHandler}
                   type="button"

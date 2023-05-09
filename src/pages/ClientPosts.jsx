@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Helmet from "../components/Helmet/Helmet";
-import CommonSection from "../components/UI/common-section/CommonSection"
+import CommonSection from "../components/UI/common-section/CommonSection";
 import { Container, Row, Col } from "reactstrap";
 import { getclientpost } from "../store/post/getclientpost";
 import ProductCard from "../components/UI/product-card/ProductCard";
@@ -12,17 +12,39 @@ import { useDispatch, useSelector } from "react-redux";
 const ClientPosts = () => {
   const { clientId } = useParams();
   const dispatch = useDispatch();
+  const [imageUrl, setImageUrl] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [pageNumber, setPageNumber] = useState(0);
   const posts = useSelector((state) => state.getclientpost.posts);
   useEffect(() => {
     dispatch(getclientpost(clientId));
+    const fetchImage = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3001/api/users/user/image/${clientId}`
+        ); // replace with your API endpoint
+        if (!response.ok) {
+          throw new Error("Failed to fetch imassge");
+        }
+        const blob = await response.blob();
+        const imageUrl = URL.createObjectURL(blob);
+        setImageUrl(imageUrl);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchImage();
   }, []);
   const searchedposts = posts?.filter((item) => {
-    if (searchTerm.value === "") { return item; }
-    if (item.titre.toLowerCase().includes(searchTerm.toLowerCase())) { return item; }
-    else { return null; }
-  })
+    if (searchTerm.value === "") {
+      return item;
+    }
+    if (item.titre.toLowerCase().includes(searchTerm.toLowerCase())) {
+      return item;
+    } else {
+      return null;
+    }
+  });
   const productPerPage = 12;
   const visitedPage = pageNumber * productPerPage;
   const displayPage = searchedposts?.slice(
@@ -37,26 +59,27 @@ const ClientPosts = () => {
   };
   return (
     <Helmet title="Emplois">
-      <br /><br /><br /><br />
+      <br />
+      <br />
+      <br />
+      <br />
       <CommonSection title="Mes Publications" />
 
       <section>
-
         <Container>
-          <Row className="justify-content-center"  >
-
+          <Row className="justify-content-center">
             <Col lg="6">
               <Link to="/post">
-                <button className="post-button">Publier une nouvelle offre d'emploi</button>
+                <button className="post-button">
+                  Publier une nouvelle offre d'emploi
+                </button>
               </Link>
             </Col>
-
           </Row>
           <br />
           <Row>
             <Col lg="6" md="6" sm="6" xs="12">
               <div className="search__widget d-flex align-items-center justify-content-between ">
-
                 <input
                   type="text"
                   placeholder="I'm looking for...."
@@ -82,7 +105,7 @@ const ClientPosts = () => {
 
             {displayPage?.map((item) => (
               <Col lg="3" md="4" sm="6" xs="6" key={item._id} className="mb-4">
-                <ProductCard item={item} />
+                <ProductCard item={item} image={imageUrl} />
               </Col>
             ))}
 
@@ -101,4 +124,4 @@ const ClientPosts = () => {
     </Helmet>
   );
 };
-export default ClientPosts
+export default ClientPosts;
