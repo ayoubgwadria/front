@@ -12,7 +12,8 @@ function Chatroom() {
   const { data, messageData, getMessageRoom } = UseFetch(id);
   const userID = useSelector((state) => state?.login?.id);
 
-  const submitMessage = async () => {
+  const submitMessage = async (e) => {
+    e.preventDefault();
     const obj = {
       contenu: message,
       room: data?._id,
@@ -23,7 +24,8 @@ function Chatroom() {
     axios
       .post("http://localhost:3001/api/chatroom/message", obj)
       .then(async (res) => {
-        socket.emit("send_message");
+        const room = data._id;
+        socket.emit("send_message", { room });
         getMessageRoom(data?._id);
         setMessage("");
       })
@@ -33,11 +35,11 @@ function Chatroom() {
   };
   useEffect(() => {
     socket.on("recievce_message", async (res) => {
-      console.log("enter message");
-      getMessageRoom(data?._id);
+      console.log("enter messssagse", res);
+      getMessageRoom(res);
     });
   }, [socket]);
-  console.log("data", data, messageData);
+  console.log("data", data);
   return (
     <Helmet title="Cart">
       <br />
@@ -47,33 +49,48 @@ function Chatroom() {
       <h1>Chat</h1>
       <div class="chat-container">
         <div class="chat-header">
-          <h3>Chat Title</h3>
-          <button>Close</button>
+          <h3>{data?.postId?.titre}</h3>
+          {/*  <button>Close</button> */}
         </div>
         <div class="chat-body">
           {messageData.map((message) => {
             if (message?.sender === userID)
               return (
-                <SenderMessage key={message?._id} message={message?.contenu} />
+                <SenderMessage
+                  key={message?._id}
+                  message={message?.contenu}
+                  user={
+                    data?.clientId?._id === userID
+                      ? data?.clientId
+                      : data?.technicienId
+                  }
+                />
               );
             else
               return (
                 <ReceiverMessage
                   key={message?._id}
                   message={message?.contenu}
+                  user={
+                    data?.clientId?._id === userID
+                      ? data?.technicienId
+                      : data?.clientId
+                  }
                 />
               );
           })}
         </div>
-        <div class="chat-input">
-          <input
-            type="text"
-            placeholder="Type a message..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-          <button onClick={submitMessage}>Send</button>
-        </div>
+        <form onSubmit={submitMessage}>
+          <div class="chat-input">
+            <input
+              type="text"
+              placeholder="Type a message..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+            <button type="submit">Send</button>
+          </div>
+        </form>
       </div>
     </Helmet>
   );
@@ -82,10 +99,10 @@ function Chatroom() {
 export default Chatroom;
 function SenderMessage(props) {
   return (
-    <div className="chat-message sender">
+    <div className="chat-message-sender sender">
+      <small>{props?.user?.nom + " " + props?.user?.prenom} </small>
       <div className="message-text">
         <p>{props.message}</p>
-        <small>{props?.time}</small>
       </div>
     </div>
   );
@@ -93,10 +110,10 @@ function SenderMessage(props) {
 
 function ReceiverMessage(props) {
   return (
-    <div className="chat-message receiver">
+    <div className="chat-message-reciever receiver">
+      <small>{props?.user?.nom + " " + props?.user?.prenom} </small>
       <div className="message-text">
         <p>{props.message}</p>
-        <small>{props?.time}</small>
       </div>
     </div>
   );
@@ -114,6 +131,7 @@ const UseFetch = (id) => {
         );
         setData(response.data);
         getMessageRoom(response.data._id);
+        joinRoom(response.data._id);
       } catch (error) {
         setError(error);
       }
@@ -121,6 +139,11 @@ const UseFetch = (id) => {
 
     fetchData();
   }, [id]);
+  const joinRoom = (idRoom) => {
+    if (idRoom !== "") {
+      socket.emit("join_room", idRoom);
+    }
+  };
   const getMessageRoom = async (idroom) => {
     try {
       const response = await axios.get(
